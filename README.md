@@ -30,6 +30,12 @@ To get the latest changes, make sure that every time you start coding, you run t
 git pull
 ```
 
+Make sure to create a .env file and have the following variables inside
+
+```
+PORT = 3000
+```
+
 To run the project type the following command
 
 ```
