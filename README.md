@@ -12,7 +12,8 @@ To run the project, use the following command
 `npm run start`
 
 To commit your changes use the version control provided by VSCode or type the following commands
-`git add .`
-`git commit -m 'small description of changes'`
-`git push -u origin main`
-
+```
+git add .
+git commit -m 'small description of changes'
+git push -u origin main
+```
