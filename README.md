@@ -1,6 +1,10 @@
 # Porsche-ecommerce-website
 E-commerce website for Porsche
 
+**MAKE SURE YOU HAVE NODE AND GIT INSTALLED**
+https://git-scm.com/downloads
+https://nodejs.org/en
+
 Start by cloning the project in your desired folder, write the below command in your terminal
 
 `git clone https://github.com/malakabdelbaki/Porsche-ecommerce-website.git`
