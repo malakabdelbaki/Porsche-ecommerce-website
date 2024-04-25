@@ -6,11 +6,11 @@ const customerSchema = Schema({
     //  customerId: Number,
      username: {type: String,required: true},
      password: {type: String,required: true},
-     DOB: Date,
-     city:String,
-     state:String,
-     StreetAddress:String,
-     cart: [{productId: Number,quantity: Number}]
+     DOB: {type: Date},
+     city:{type: String},
+     state:{type: String},
+     StreetAddress:{type: String},
+     cart: [{type: Schema.Types.ObjectId, ref: 'Product'}]
 })
 const Customer = mongoose.model('Customer', customerSchema);
 
