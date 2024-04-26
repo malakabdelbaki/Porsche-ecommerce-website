@@ -24,7 +24,7 @@ git config --global user.username username
 ```
 
 
-Then open the folder and type in the following command
+After you are sure of the directory, run the following command
 `npm install`
 
 To run the project, use the following command
