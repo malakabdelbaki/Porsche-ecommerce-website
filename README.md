@@ -6,9 +6,23 @@ E-commerce website for Porsche
 https://git-scm.com/downloads
 https://nodejs.org/en
 
-Start by cloning the project in your desired folder, write the below command in your terminal
+Start by cloning the project in your **DESIRED** folder directory, write the below command in your terminal
+for example mine is in  D:\vscode\Porsche-ecommerce-website>
+
+I recommend you press Ctrl+Shift+N (Opens new VSCode Window) and just start from there.
 
 `git clone https://github.com/malakabdelbaki/Porsche-ecommerce-website.git`
+
+MAKE SURE YOU ARE IN THE PROJECTS DIRECTORY, you can use the `cd Porsche-ecommerce-website` command to access the project's directory
+
+If you get an authorization error, run the following commands and enter your github credentials.
+
+```
+git config --global user.email youremail@example.com
+git config --global user.password yourpassword
+git config --global user.username username
+```
+
 
 Then open the folder and type in the following command
 `npm install`
