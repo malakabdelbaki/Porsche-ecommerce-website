@@ -38,7 +38,7 @@ app.post(
 app.get("/api/v1/product", productController.getProducts); // browsing and searching all products (clara)
 app.get("/api/v1/product/:id", productController.getProductById); //viewing product details (clara)
 
-app.post("/api/v1/product", authMiddleware, productController.createProduct); // create/add product (roaa)
+app.post("/api/v1/product", authMiddleware, productController.addProduct); // create/add product (roaa)
 app.patch(
   "/api/v1/product/:id",
   authMiddleware,
@@ -58,13 +58,12 @@ app.delete(
   customerController.removeFromCart
 ); //remove from cart (yousef)
 
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-app
-  .listen(process.env.PORT, () => {
-    console.log(`Server is running on port ${process.env.PORT}`);
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    app.listen(process.env.PORT, () => {
+      console.log(`Server is running on port ${process.env.PORT}`);
+    });
   })
   .catch((err) => {
     console.log("Failed to connect to MongoDB", err);
