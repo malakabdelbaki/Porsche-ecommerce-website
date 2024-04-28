@@ -15,7 +15,14 @@ const purchaseProduct = async (req,res)=>{
         }
     
         // Add the purchased product to the customer's cart
-        customer.cart.push(product);
+        //customer.cart.push(product);
+
+        // Print a success message
+        console.log("Product purchased successfully");
+
+        // Print the updated cart list
+        console.log("Your Cart List now:");
+        console.log(customer.cart);
     
         // Save the updated customer document
         await customer.save();
