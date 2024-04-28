@@ -42,13 +42,13 @@ const register  = async(req,res) => {
         const { username, email, password } = req.body;
     
         // Check if user already exists
-        let user = await User.findOne({ email });
+        let user = await Customer.findOne({ username });
         if (user) {
-          return res.status(400).json({ msg: 'User already exists' });
+          return res.status(400).json({ msg: 'customer already exists' });
         }
     
         // Create new user
-        user = new User({ username, email, password });
+        user = new Customer({ username, email, password });
     
         // Hash password
         const salt = await bcrypt.genSalt(10);
