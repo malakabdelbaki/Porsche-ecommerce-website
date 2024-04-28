@@ -1,19 +1,37 @@
-const getProducts = async (req,res) => {
+const Admin = require("../models/admin");
+const Product = require("../models/product");
 
-}
+const addProduct = async (req, res) => {
+  try {
+    const { name, price, description, category, production_year } = req.body;
 
-const getProductById = async (req,res) => {
+    const newProduct = new Product({
+      name,
+      price,
+      description,
+      category,
+      production_year,
+    });
 
+    await newProduct.save();
 
-}
+    res
+      .status(201)
+      .json({ message: "Product added successfully.", product: newProduct });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error" });
+  }
+};
 
-const createProduct = async (req,res) => {
+module.exports = addProduct;
 
-}
+const getProducts = async (req, res) => {};
 
-const updateProduct = async (req,res) => {
+const getProductById = async (req, res) => {};
 
-}
+const updateProduct = async (req, res) => {};
+
 
 const deleteProduct = async (req,res) => {
     try {
@@ -25,7 +43,12 @@ const deleteProduct = async (req,res) => {
       } catch (error) {
         res.status(500).json({ message: 'Failed to delete product' });
       }
-
 }
 
-module.exports = {getProducts,getProductById,createProduct,updateProduct,deleteProduct}
+module.exports = {
+  getProducts,
+  getProductById,
+  addProduct,
+  updateProduct,
+  deleteProduct,
+};

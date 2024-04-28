@@ -20,7 +20,7 @@ If you get an authorization error, run the following commands and enter your git
 ```
 git config --global user.email youremail@example.com
 git config --global user.password yourpassword
-git config --global user.username username
+git config --global user.name username
 ```
 
 
