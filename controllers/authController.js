@@ -5,7 +5,7 @@ const customer = require('../models/customer.js');
 const login = async (req, res) => {
   try{
     const{ username, password } = req.body;
-    let cust = await customer.findOne({email});
+    let cust = await customer.findOne({username});
     if(!cust){
       return res.status(400).json({msg : 'Invalid Username'});
     }
@@ -16,7 +16,7 @@ const login = async (req, res) => {
 
     const jwtPayload = {
       user:{
-        id: customer.id,
+        id: cust.id,
       }
     };
 
