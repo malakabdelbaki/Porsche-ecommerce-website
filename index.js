@@ -41,7 +41,7 @@ app.post(
   "/api/v1/purchase",
   authMiddleware,
   purchaseController.purchaseProduct
-); //purchasing product (phebe)
+); //purchasing product (phebe) works
 
 //PRODUCT CONTROLLER
 app.get("/api/v1/product", productController.getProducts); // browsing and searching all products (clara)
