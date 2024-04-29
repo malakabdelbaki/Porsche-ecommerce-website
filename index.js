@@ -25,32 +25,33 @@ const authMiddleware = (req, res, next) => {
     // Add user to request object
     req.user = decoded.user;
     next();
-
   } catch (err) {
     console.error("JWT verification error:", err);
     res.status(401).json({ msg: "Token is not valid" });
   }
 };
 
-
 function authorizeRoles(allowedRoles) {
-    return (req, res, next) => {
-        console.log(req.user);
+  return (req, res, next) => {
+    console.log(req.user);
 
-        if (!req.user) {
-            return res.status(401).json({ message: 'You need to be logged in to access this route' });
-        }
-
-        const { role } = req.user;
-        console.log(role);
-
-        if (role!="admin") {
-            return res.status(403).json({ message: 'You do not have permission to perform this action' });
-        }
-
-        next();
+    if (!req.user) {
+      return res
+        .status(401)
+        .json({ message: "You need to be logged in to access this route" });
     }
 
+    const { type } = req.user;
+    console.log(type);
+
+    if (type != "admin") {
+      return res
+        .status(403)
+        .json({ message: "You do not have permission to perform this action" });
+    }
+
+    next();
+  };
 }
 
 //AUTHENTICATION
@@ -68,17 +69,22 @@ app.post(
 app.get("/api/v1/product", productController.getProducts); // browsing and searching all products (clara)
 app.get("/api/v1/product/:id", productController.getProductById); //viewing product details (clara)
 
-app.post("/api/v1/product", authMiddleware, authorizeRoles(['admin']), productController.addProduct); // create/add product (roaa) works but has to check for admin or customer
+app.post(
+  "/api/v1/product",
+  authMiddleware,
+  authorizeRoles(["admin"]),
+  productController.addProduct
+); // create/add product (roaa) works but has to check for admin or customer
 app.patch(
   "/api/v1/product/:id",
   authMiddleware,
-  authorizeRoles(['admin']),
+  authorizeRoles(["admin"]),
   productController.updateProduct
 ); //update product (sandra)
 app.delete(
   "/api/v1/product/:id",
   authMiddleware,
-  authorizeRoles(['admin']),
+  authorizeRoles(["admin"]),
   productController.deleteProduct
 ); //(marina) works
 
@@ -87,7 +93,7 @@ app.post("/api/v1/customer", authMiddleware, customerController.addToCart); //ad
 app.delete(
   "/api/v1/customer",
   authMiddleware,
-  authorizeRoles('customer'),
+  authorizeRoles("customer"),
   customerController.removeFromCart
 ); //remove from cart (yousef) works
 

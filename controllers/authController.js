@@ -9,21 +9,22 @@ const login = async (req, res) => {
     let cust = await customer.findOne({ username });
     let adm = await admin.findOne({ username });
     if (!cust && !adm) {
-        return res.status(400).json({ msg: "Invalid Username" });
+      return res.status(400).json({ msg: "Invalid Username" });
     }
     let isValid;
     let ID;
 
-    if(cust){
+    let user;
+
+    if (cust) {
       isValid = await bcrypt.compare(password, cust.password);
-      if(isValid){
-        ID = cust._id;
+      if (isValid) {
+        user = cust;
       }
-    }
-    else if(adm){
+    } else if (adm) {
       isValid = await bcrypt.compare(password, adm.password);
-      if(isValid){
-        ID = adm._id;
+      if (isValid) {
+        user = adm;
       }
     }
 
@@ -31,9 +32,7 @@ const login = async (req, res) => {
       return res.status(400).json({ msg: "Invalid Password" });
     }
     const jwtPayload = {
-      user: {
-        id: ID,
-      },
+      user: user,
     };
 
     jwt.sign(
@@ -64,7 +63,7 @@ const register = async (req, res) => {
     }
 
     // Create new user
-    user = new customer({ username, email, password});
+    user = new customer({ username, email, password });
 
     // Hash password
     const salt = await bcrypt.genSalt(10);
@@ -75,9 +74,7 @@ const register = async (req, res) => {
 
     // Create JWT
     const jwtPayload = {
-      user: {
-        id: user._id,
-      },
+      user: user,
     };
 
     jwt.sign(
