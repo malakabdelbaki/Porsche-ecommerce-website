@@ -1,22 +1,38 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const customer = require("../models/customer.js");
+const admin = require("../models/admin.js");
 
 const login = async (req, res) => {
   try {
     const { username, password } = req.body;
     let cust = await customer.findOne({ username });
-    if (!cust) {
-      return res.status(400).json({ msg: "Invalid Username" });
+    let adm = await admin.findOne({ username });
+    if (!cust && !adm) {
+        return res.status(400).json({ msg: "Invalid Username" });
     }
-    const isValid = await bcrypt.compare(password, cust.password);
+    let isValid;
+    let ID;
+
+    if(cust){
+      isValid = await bcrypt.compare(password, cust.password);
+      if(isValid){
+        ID = cust._id;
+      }
+    }
+    else if(adm){
+      isValid = await bcrypt.compare(password, adm.password);
+      if(isValid){
+        ID = adm._id;
+      }
+    }
+
     if (!isValid) {
       return res.status(400).json({ msg: "Invalid Password" });
     }
-
     const jwtPayload = {
       user: {
-        id: cust._id,
+        id: ID,
       },
     };
 
@@ -28,7 +44,7 @@ const login = async (req, res) => {
         if (err) throw err;
         res
           .status(200)
-          .json({ token, msg: "logged in successfully", userID: cust._id });
+          .json({ token, msg: "logged in successfully", userID: ID });
       }
     );
   } catch (err) {
@@ -48,7 +64,7 @@ const register = async (req, res) => {
     }
 
     // Create new user
-    user = new customer({ username, email, password });
+    user = new customer({ username, email, password});
 
     // Hash password
     const salt = await bcrypt.genSalt(10);
