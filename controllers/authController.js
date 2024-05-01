@@ -13,18 +13,18 @@ const login = async (req, res) => {
     }
     let isValid;
     let ID;
-
-    let user;
+    let userr;
 
     if (cust) {
       isValid = await bcrypt.compare(password, cust.password);
       if (isValid) {
-        user = cust;
+        userr = cust;
       }
     } else if (adm) {
-      isValid = await bcrypt.compare(password, adm.password);
-      if (isValid) {
-        user = adm;
+      //isValid = await bcrypt.compare(password, adm.password);
+      if(password ==  adm.password ){
+        isValid = true;
+        userr = adm;
       }
     }
 
@@ -32,7 +32,7 @@ const login = async (req, res) => {
       return res.status(400).json({ msg: "Invalid Password" });
     }
     const jwtPayload = {
-      user: user,
+      user: userr,
     };
 
     jwt.sign(

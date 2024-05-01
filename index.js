@@ -17,9 +17,9 @@ const authMiddleware = (req, res, next) => {
   }
   // Extract the token from the Authorization header
   const token = authHeader.split(" ")[1];
-  if (!token) {
-    return res.status(401).json({ msg: "No token, authorization denied" });
-  }
+  // if (!token) {
+  //   return res.status(401).json({ msg: "No token, authorization denied" });
+  // }
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     // Add user to request object
@@ -31,31 +31,25 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
-function authorizeRoles(allowedRoles) {
-  return (req, res, next) => {
-    console.log(req.user);
+const authorizeType = (req, res, next) => {
+  // if (!req.user) {
+  //   return res
+  //     .status(401)
+  //     .json({ message: "You need to be logged in to access this route" });
+  // }
 
-    if (!req.user) {
-      return res
-        .status(401)
-        .json({ message: "You need to be logged in to access this route" });
-    }
+  const { type } = req.user;
+  if (type != "admin") {
+    return res
+      .status(403)
+      .json({ message: "You do not have permission to perform this action" });
+  }
+  next();
+};
 
-    const { type } = req.user;
-    console.log(type);
-
-    if (type != "admin") {
-      return res
-        .status(403)
-        .json({ message: "You do not have permission to perform this action" });
-    }
-
-    next();
-  };
-}
 
 //AUTHENTICATION
-app.post("/api/v1/login", authController.login); //login (malak) works
+app.post("/api/v1/login", authController.login); //login (malak) works 
 app.post("/api/v1/register", authController.register); //reigster (toqa) works
 
 //purchase product
@@ -72,19 +66,19 @@ app.get("/api/v1/product/:id", productController.getProductById); //viewing prod
 app.post(
   "/api/v1/product",
   authMiddleware,
-  authorizeRoles(["admin"]),
+  authorizeType,
   productController.addProduct
 ); // create/add product (roaa) works but has to check for admin or customer
 app.patch(
   "/api/v1/product/:id",
   authMiddleware,
-  authorizeRoles(["admin"]),
+  authorizeType,
   productController.updateProduct
 ); //update product (sandra)
 app.delete(
   "/api/v1/product/:id",
   authMiddleware,
-  authorizeRoles(["admin"]),
+  authorizeType,
   productController.deleteProduct
 ); //(marina) works
 
@@ -93,9 +87,10 @@ app.post("/api/v1/customer", authMiddleware, customerController.addToCart); //ad
 app.delete(
   "/api/v1/customer",
   authMiddleware,
-  authorizeRoles("customer"),
+  authorizeType,
   customerController.removeFromCart
 ); //remove from cart (yousef) works
+
 
 mongoose
   .connect(process.env.MONGO_URI)

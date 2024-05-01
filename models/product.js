@@ -9,6 +9,7 @@ const ProductSchema = Schema({
      description:{type:String},
      category:{type:String},
      production_year: {type:Date},
+     quantity: {type: Number},
     })
 
 const Product = mongoose.model('Product', ProductSchema);
