@@ -30,7 +30,29 @@ const getProducts = async (req, res) => {};
 
 const getProductById = async (req, res) => {};
 
-const updateProduct = async (req, res) => {};
+const updateProduct = async (req, res) => {
+  const { id } = req.params;
+    const productData = req.body;
+
+    try {
+        // Find the product by ID and update it with the new data
+        const updatedProduct = await Product.findByIdAndUpdate(
+            id,
+            productData,
+            { new: true } // Return the updated product
+        );
+
+        if (!updatedProduct) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        // Return the updated product as the response
+        res.json(updatedProduct);
+    } catch (error) {
+        console.error('Error updating product:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
 
 const deleteProduct = async (req, res) => {
   try {
