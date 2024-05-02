@@ -26,9 +26,45 @@ const addProduct = async (req, res) => {
 
 module.exports = addProduct;
 
-const getProducts = async (req, res) => {};
+const getProducts = async (req, res) => {
+  try {
+    // Retrieve all products from the database
+    const products = await Product.find({});
 
-const getProductById = async (req, res) => {};
+    // If products are found, return them
+    if (products && products.length > 0) {
+      res.json(products);
+    } else {
+      // If no products are found, return a 404 status and message
+      res.status(404).json({ message: 'No products found' });
+    }
+  } catch (err) {
+    // If an error occurs, return a 500 status and message
+    res.status(500).json({ message: err.message });
+  }
+};
+
+const getProductById = async (req, res) => {
+  try {
+    // Extract the product name from the request parameters
+    const productID = req.params.id;
+
+    // Search for the product in the database
+    const product = await Product.findOne({ _id: productID });
+
+    // If product is found, return it
+    if (product) {
+      res.json(product);
+    } else {
+      // If product is not found, return a 404 status and message
+      res.status(404).json({ message: 'Product not found' });
+    }
+  } catch (err) {
+    // If an error occurs, return a 500 status and message
+    res.status(500).json({ message: err.message });
+  }
+ 
+};
 
 const updateProduct = async (req, res) => {};
 
