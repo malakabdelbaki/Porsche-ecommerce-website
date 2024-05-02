@@ -47,9 +47,8 @@ const authorizeType = (req, res, next) => {
   next();
 };
 
-
 //AUTHENTICATION
-app.post("/api/v1/login", authController.login); //login (malak) works 
+app.post("/api/v1/login", authController.login); //login (malak) works
 app.post("/api/v1/register", authController.register); //reigster (toqa) works
 
 //purchase product
@@ -87,10 +86,8 @@ app.post("/api/v1/customer", authMiddleware, customerController.addToCart); //ad
 app.delete(
   "/api/v1/customer",
   authMiddleware,
-  authorizeType,
   customerController.removeFromCart
 ); //remove from cart (yousef) works
-
 
 mongoose
   .connect(process.env.MONGO_URI)
