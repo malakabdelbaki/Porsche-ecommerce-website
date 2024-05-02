@@ -1,23 +1,38 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const customer = require("../models/customer.js");
+const admin = require("../models/admin.js");
 
 const login = async (req, res) => {
   try {
     const { username, password } = req.body;
     let cust = await customer.findOne({ username });
-    if (!cust) {
+    let adm = await admin.findOne({ username });
+    if (!cust && !adm) {
       return res.status(400).json({ msg: "Invalid Username" });
     }
-    const isValid = await bcrypt.compare(password, cust.password);
+    let isValid;
+    let ID;
+    let userr;
+
+    if (cust) {
+      isValid = await bcrypt.compare(password, cust.password);
+      if (isValid) {
+        userr = cust;
+      }
+    } else if (adm) {
+      //isValid = await bcrypt.compare(password, adm.password);
+      if(password ==  adm.password ){
+        isValid = true;
+        userr = adm;
+      }
+    }
+
     if (!isValid) {
       return res.status(400).json({ msg: "Invalid Password" });
     }
-
     const jwtPayload = {
-      user: {
-        id: cust._id,
-      },
+      user: userr,
     };
 
     jwt.sign(
@@ -28,7 +43,7 @@ const login = async (req, res) => {
         if (err) throw err;
         res
           .status(200)
-          .json({ token, msg: "logged in successfully", userID: cust._id });
+          .json({ token, msg: "logged in successfully", userID: ID });
       }
     );
   } catch (err) {
@@ -59,9 +74,7 @@ const register = async (req, res) => {
 
     // Create JWT
     const jwtPayload = {
-      user: {
-        id: user._id,
-      },
+      user: user,
     };
 
     jwt.sign(

@@ -10,7 +10,9 @@ const customerSchema = Schema({
      city:{type: String},
      state:{type: String},
      StreetAddress:{type: String},
-     cart: [{type: Schema.Types.ObjectId, ref: 'Product'}]
+     cart: [{type: Schema.Types.ObjectId, ref: 'Product'}],
+     type:{type:String,
+        default:"customer" },
 })
 const Customer = mongoose.model('Customer', customerSchema);
 
