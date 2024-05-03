@@ -36,7 +36,7 @@ const getProducts = async (req, res) => {
       res.json(products);
     } else {
       // If no products are found, return a 404 status and message
-      res.status(404).json({ message: 'No products found' });
+      res.status(404).json({ message: "No products found" });
     }
   } catch (err) {
     // If an error occurs, return a 500 status and message
@@ -54,40 +54,39 @@ const getProductById = async (req, res) => {
 
     // If product is found, return it
     if (product) {
-      res.json(product);
+      res.status(200).json(product);
     } else {
       // If product is not found, return a 404 status and message
-      res.status(404).json({ message: 'Product not found' });
+      res.status(404).json({ message: "Product not found" });
     }
   } catch (err) {
     // If an error occurs, return a 500 status and message
     res.status(500).json({ message: err.message });
   }
- 
 };
 
 const updateProduct = async (req, res) => {
   const { id } = req.params;
-    const productData = req.body;
+  const productData = req.body;
 
-    try {
-        // Find the product by ID and update it with the new data
-        const updatedProduct = await Product.findByIdAndUpdate(
-            id,
-            productData,
-            { new: true } // Return the updated product
-        );
+  try {
+    // Find the product by ID and update it with the new data
+    const updatedProduct = await Product.findByIdAndUpdate(
+      id,
+      productData,
+      { new: true } // Return the updated product
+    );
 
-        if (!updatedProduct) {
-            return res.status(404).json({ message: 'Product not found' });
-        }
-
-        // Return the updated product as the response
-        res.json(updatedProduct);
-    } catch (error) {
-        console.error('Error updating product:', error);
-        res.status(500).json({ message: 'Internal server error' });
+    if (!updatedProduct) {
+      return res.status(404).json({ message: "Product not found" });
     }
+
+    // Return the updated product as the response
+    res.status(200).json(updatedProduct);
+  } catch (error) {
+    console.error("Error updating product:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
 
 const deleteProduct = async (req, res) => {
