@@ -24,8 +24,6 @@ const addProduct = async (req, res) => {
   }
 };
 
-module.exports = addProduct;
-
 const getProducts = async (req, res) => {
   try {
     // Retrieve all products from the database
@@ -65,10 +63,27 @@ const getProductById = async (req, res) => {
   }
 };
 
+const searchProductByName = async (req, res) => {
+  try {
+    const { name } = req.body;
+
+    const products = await Product.find({
+      name: { $regex: name, $options: "i" },
+    });
+
+    if (products.length > 0) {
+      res.status(200).json(products);
+    } else {
+      res.status(404).json({ message: "Products not found" });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 const updateProduct = async (req, res) => {
   const { id } = req.params;
   const productData = req.body;
-
   try {
     // Find the product by ID and update it with the new data
     const updatedProduct = await Product.findByIdAndUpdate(
@@ -107,6 +122,7 @@ module.exports = {
   getProducts,
   getProductById,
   addProduct,
+  searchProductByName,
   updateProduct,
   deleteProduct,
 };
