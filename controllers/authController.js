@@ -21,12 +21,11 @@ const login = async (req, res) => {
         userr = cust;
       }
     } else if (adm) {
-      //isValid = await bcrypt.compare(password, adm.password);
-      if(password ==  adm.password ){
-        isValid = true;
+      isValid = await bcrypt.compare(password, adm.password);
+      if (isValid) {
         userr = adm;
       }
-    }
+      }
 
     if (!isValid) {
       return res.status(400).json({ msg: "Invalid Password" });
@@ -52,7 +51,7 @@ const login = async (req, res) => {
   }
 };
 
-const register = async (req, res) => {
+const registerCust = async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
@@ -92,4 +91,44 @@ const register = async (req, res) => {
   }
 };
 
-module.exports = { login, register };
+const registerAdm = async (req, res) => {
+  try {
+    const { username, password, department} = req.body;
+
+    // Check if user already exists
+    let user = await admin.findOne({ username });
+    if (user) {
+      return res.status(400).json({ msg: "admin already exists" });
+    }
+
+    // Create new user
+    user = new admin({ username, password, department });
+
+    // Hash password
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(password, salt);
+
+    // Save user to database
+    await user.save();
+
+    // Create JWT
+    const jwtPayload = {
+      user: user,
+    };
+
+    jwt.sign(
+      jwtPayload,
+      process.env.JWT_SECRET,
+      { expiresIn: 3600 }, // expires in 1 hour
+      (err, token) => {
+        if (err) throw err;
+        res.json({ token });
+      }
+    );
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+};
+
+module.exports = { login, registerCust , registerAdm};
