@@ -32,11 +32,11 @@ const authMiddleware = (req, res, next) => {
 };
 
 const authorizeType = (req, res, next) => {
-  // if (!req.user) {
-  //   return res
-  //     .status(401)
-  //     .json({ message: "You need to be logged in to access this route" });
-  // }
+  if (!req.user) {
+    return res
+      .status(401)
+      .json({ message: "You need to be logged in to access this route" });
+  }
 
   const { type } = req.user;
   if (type != "admin") {
@@ -49,7 +49,8 @@ const authorizeType = (req, res, next) => {
 
 //AUTHENTICATION
 app.post("/api/v1/login", authController.login); //login (malak) works
-app.post("/api/v1/register", authController.register); //reigster (toqa) works
+app.post("/api/v1/registerCustomer", authController.registerCust); //reigsterCustomer (toqa) works
+app.post("/api/v1/registerAdmin", authController.registerAdm); //reigsterAdmin (malak) works
 
 //purchase product
 app.post(

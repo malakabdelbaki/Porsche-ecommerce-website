@@ -3,7 +3,7 @@ const Product = require("../models/product");
 
 const addProduct = async (req, res) => {
   try {
-    const { name, price, description, category, production_year } = req.body;
+    const { name, price, description, category, production_year, quantity } = req.body;
 
     const newProduct = new Product({
       name,
@@ -11,6 +11,7 @@ const addProduct = async (req, res) => {
       description,
       category,
       production_year,
+      quantity
     });
 
     await newProduct.save();
@@ -107,6 +108,7 @@ const updateProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     const result = await Product.findByIdAndDelete(req.params.id);
+    console.log(req.params.id)
     if (!result) {
       return res.status(404).json({ message: "No product found with that ID" });
     }
