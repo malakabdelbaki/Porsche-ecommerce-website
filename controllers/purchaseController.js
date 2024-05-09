@@ -27,13 +27,6 @@ const purchaseProduct = async (req, res) => {
         totalPrice += product.price;
       }
 
-
-      //????????????????
-      // // Check if the customer can afford the total cart price
-      // if (customer.balance < totalPrice) {
-      //     return res.status(400).json({ message: 'Insufficient funds to complete the purchase.' });
-      // }
-
       // Process the purchase for each item in the cart
       for (const item of customer.cart) {
           const product = await Product.findById(item._id);
