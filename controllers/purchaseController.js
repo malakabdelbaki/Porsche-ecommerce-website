@@ -17,13 +17,24 @@ const purchaseProduct = async (req, res) => {
 
       // Calculate total price and check stock availability
       let totalPrice = 0;
+
+      // for (const item of customer.cart) {
+      //     const product = await Product.findById(item._id);
+      //     if (!product || product.stock < 1) {
+      //         return res.status(400).json({ message: Product ${product ? product.name : 'with ID ' + item.productId} is out of stock or does not have sufficient quantity. });
+      //     }
+      //     totalPrice += product.price;
+      // }
+
       for (const item of customer.cart) {
-          const product = await Product.findById(item._id);
-          if (!product || product.stock < 1) {
-              return res.status(400).json({ message: Product ${product ? product.name : 'with ID ' + item.productId} is out of stock or does not have sufficient quantity. });
-          }
-          totalPrice += product.price;
+        const product = await Product.findById(item._id);
+        if (!product || product.stock < 1) {
+          return res.status(400).json({ message: `Product ${product ? product.name : 'with ID ' + item.productId} is out of stock or does not have sufficient quantity.` });
+        }
+        totalPrice += product.price;
       }
+
+
       //????????????????
       // // Check if the customer can afford the total cart price
       // if (customer.balance < totalPrice) {
