@@ -60,6 +60,7 @@ app.post(
 
 //PRODUCT CONTROLLER
 app.get("/api/v1/product", productController.getProducts); // browsing and searching all products (clara)
+app.get("/api/v1/product/search", productController.searchProductByName); //searching for specific product in database
 app.get("/api/v1/product/:id", productController.getProductById); //viewing product details (clara)
 
 app.post(
