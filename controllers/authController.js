@@ -53,7 +53,7 @@ const login = async (req, res) => {
 
 const registerCust = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, DOB,  city, state, StreetAddress} = req.body;
 
     // Check if user already exists
     let user = await customer.findOne({ username });
@@ -62,7 +62,7 @@ const registerCust = async (req, res) => {
     }
 
     // Create new user
-    user = new customer({ username, email, password });
+    user = new customer({ username, email, password, DOB,  city, state, StreetAddress });
 
     // Hash password
     const salt = await bcrypt.genSalt(10);
