@@ -43,7 +43,7 @@ const removeFromCart = async (req, res) => {
     const customer = await Customer.findById(customerID);
     const product = await Product.findById(productID);
 
-    if (!customer || !product) {
+    if (!customer) {
       return res.status(404).json({ message: "Customer not found." });
     } else if (!product) {
       return res.status(404).json({ message: "Product not found." });
