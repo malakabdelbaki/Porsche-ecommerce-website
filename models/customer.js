@@ -14,6 +14,6 @@ const customerSchema = Schema({
      type:{type:String,
         default:"customer" },
 })
-const Customer = mongoose.model('Customer', customerSchema);
+const Customer = mongoose.model('Customer', customerSchema );
 
 module.exports = Customer
