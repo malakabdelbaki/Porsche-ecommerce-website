@@ -43,18 +43,23 @@ const removeFromCart = async (req, res) => {
     const customer = await Customer.findById(customerID);
     const product = await Product.findById(productID);
 
-    if (!customer || !product) {
+    if (!customer) {
       return res.status(404).json({ message: "Customer not found." });
     } else if (!product) {
       return res.status(404).json({ message: "Product not found." });
     }
 
-    customer.cart = customer.cart.filter(
-      (product) => product._id !== productID
-    );
+    if(customer.cart.includes(productID)){
+      customer.cart = customer.cart.filter(
+        (cartProductID) => cartProductID.toString() !== productID
+      );
+      
     await customer.save();
-
     res.status(200).json({ message: "Product deleted." });
+  }
+  else{
+    return res.status(404).json({message:"product not found in cart"});
+  }
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error deleting product from cart" });
