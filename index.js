@@ -2,13 +2,14 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
+const cors = require("cors");
 require("dotenv").config();
 const authController = require("./controllers/authController");
 const productController = require("./controllers/productController");
 const customerController = require("./controllers/customerController");
 const purchaseController = require("./controllers/purchaseController");
 app.use(express.json());
-
+app.use(cors());
 //JWT MIDDLEWARE (malak)
 const authMiddleware = (req, res, next) => {
   const authHeader = req.header("Authorization");
