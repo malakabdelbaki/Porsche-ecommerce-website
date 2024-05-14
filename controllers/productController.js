@@ -66,7 +66,7 @@ const getProductById = async (req, res) => {
 
 const searchProductByName = async (req, res) => {
   try {
-    const { name } = req.body;
+    const { name } = req.query;
 
     const products = await Product.find({
       name: { $regex: name, $options: "i" },
