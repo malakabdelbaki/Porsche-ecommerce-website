@@ -9,6 +9,14 @@ const customerController = require("./controllers/customerController");
 const purchaseController = require("./controllers/purchaseController");
 app.use(express.json());
 
+app.use(function(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
+
 //JWT MIDDLEWARE (malak)
 const authMiddleware = (req, res, next) => {
   const authHeader = req.header("Authorization");
@@ -90,6 +98,7 @@ app.delete(
   authMiddleware,
   customerController.removeFromCart
 ); //remove from cart (yousef) works
+
 
 mongoose
   .connect(process.env.MONGO_URI)
