@@ -85,6 +85,7 @@ app.delete(
 ); //(marina) works
 
 //CUSTOMER CONTROLLER
+app.get("/api/v1/customer/cart", authMiddleware, customerController.getCart); //viewing cart
 app.post("/api/v1/customer", authMiddleware, customerController.addToCart); //add to cart (roaa)  works
 app.delete(
   "/api/v1/customer",

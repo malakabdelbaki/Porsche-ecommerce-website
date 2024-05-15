@@ -34,6 +34,7 @@ const addToCart = async (req, res) => {
 
 const removeFromCart = async (req, res) => {
   try {
+    console.log(req.user);
     if (!req.user) return res.status(401).json({ message: "Unauthorized" });
     if (!req.body.productID)
       return res.status(400).json({ message: "Product ID is required" });
@@ -49,21 +50,32 @@ const removeFromCart = async (req, res) => {
       return res.status(404).json({ message: "Product not found." });
     }
 
-    if(customer.cart.includes(productID)){
+    if (customer.cart.includes(productID)) {
       customer.cart = customer.cart.filter(
         (cartProductID) => cartProductID.toString() !== productID
       );
-      
-    await customer.save();
-    res.status(200).json({ message: "Product deleted." });
-  }
-  else{
-    return res.status(404).json({message:"product not found in cart"});
-  }
+
+      await customer.save();
+      res.status(200).json({ message: "Product deleted." });
+    } else {
+      return res.status(404).json({ message: "product not found in cart" });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error deleting product from cart" });
   }
 };
 
-module.exports = { addToCart, removeFromCart };
+const getCart = async (req, res) => {
+  try {
+    if (!req.user) return res.status(401).json({ message: "Unauthorized" });
+    const customerID = req.user._id;
+    const customer = await Customer.findById(customerID).populate("cart");
+    res.status(200).json({ cart: customer.cart });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error retrieving cart" });
+  }
+};
+
+module.exports = { addToCart, removeFromCart, getCart };
