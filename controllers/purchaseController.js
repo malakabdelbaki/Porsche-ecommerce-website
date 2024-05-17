@@ -21,13 +21,11 @@ const purchaseProduct = async (req, res) => {
     for (const item of customer.cart) {
       const product = await Product.findById(item._id);
       if (!product || product.stock < 1) {
-        return res
-          .status(400)
-          .json({
-            message: `Product ${
-              product ? product.name : "with ID " + item.productId
-            } is out of stock or does not have sufficient quantity.`,
-          });
+        return res.status(400).json({
+          message: `Product ${
+            product ? product.name : "with ID " + item.productId
+          } is out of stock or does not have sufficient quantity.`,
+        });
       }
       totalPrice += product.price;
     }
@@ -42,12 +40,9 @@ const purchaseProduct = async (req, res) => {
 
     customer.cart = []; // Clearing the cart after purchase
     await customer.save();
-    res
-      .status(200)
-      .json({
-        message: "All items in cart purchased successfully. Total paid =",
-        totalPrice,
-      });
+    res.status(200).json({
+      message: `All items in cart purchased successfully. Total paid =${totalPrice}`,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error." });
