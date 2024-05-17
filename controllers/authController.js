@@ -33,7 +33,6 @@ const login = async (req, res) => {
     const jwtPayload = {
       user: userr,
     };
-
     jwt.sign(
       jwtPayload,
       process.env.JWT_SECRET,
@@ -42,7 +41,7 @@ const login = async (req, res) => {
         if (err) throw err;
         res
           .status(200)
-          .json({ token, msg: "logged in successfully", userID: ID });
+          .json({ token, msg: "logged in successfully", userID: ID, type: userr.type });
       }
     );
   } catch (err) {
