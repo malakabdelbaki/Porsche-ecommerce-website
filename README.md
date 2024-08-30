@@ -58,8 +58,3 @@ To get started with this project, follow these steps:
 6. **Testing the API**:
    - Use tools like Postman or cURL to test the public and private API endpoints.
    - Ensure all endpoints work as expected and data is correctly stored and retrieved from MongoDB.
-
-### API Documentation
-
-For detailed information on each API endpoint, refer to the [API Documentation](./docs/api.md).
-
